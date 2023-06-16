@@ -1,0 +1,39 @@
+name: GiftCard Demo
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  build:
+    name: Test and Build on JDK ${{ matrix.java-version }}
+    runs-on: ubuntu-latest
+    continue-on-error: true # do not fail the whole job if one of the steps fails
+
+    strategy:
+      matrix:
+        include:
+          - java-version: 11
+          - java-version: 17
+      fail-fast: false
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK ${{ matrix.java-version }}
+        uses: actions/setup-java@v3.10.0
+        with:
+          distribution: 'zulu'
+          java-version: ${{ matrix.java-version }}
+          cache: "maven"
+          server-id: sonatype
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+
+      - name: Build
+        run: |
+          ./mvnw -B -U clean verify
