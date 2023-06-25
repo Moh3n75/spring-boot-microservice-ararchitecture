@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 public class ProductCommand {
 
     @TargetAggregateIdentifier
-    private final Integer id;
+    private final String eventId;
 
     private final String title;
 

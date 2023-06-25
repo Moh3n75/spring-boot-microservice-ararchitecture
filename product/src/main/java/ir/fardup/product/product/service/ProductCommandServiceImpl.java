@@ -6,6 +6,8 @@ import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @RequiredArgsConstructor
 @Service
 public class ProductCommandServiceImpl implements ProductCommandService {
@@ -19,6 +21,8 @@ public class ProductCommandServiceImpl implements ProductCommandService {
     public ProductModel create(ProductModel productModel) throws Exception {
 
         var res = commandGateway.sendAndWait(ProductCommand.builder()
+                .eventId(UUID.randomUUID().toString())
+                .title(productModel.getTitle())
                 .quantity(productModel.getQuantity())
                 .price(productModel.getPrice())
                 .build());

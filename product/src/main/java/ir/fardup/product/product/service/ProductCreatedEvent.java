@@ -7,6 +7,8 @@ import java.math.BigDecimal;
 @Data
 public class ProductCreatedEvent {
 
+    private String eventId;
+
     private Integer id;
 
     private String title;

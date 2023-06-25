@@ -4,13 +4,15 @@ import ir.fardup.product.product.service.ProductCommandService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/product")
 public record ProductController(ProductCommandService productCommandService) {
 
 
-    @PostMapping
+    @PostMapping("")
     public ProductModel create(@RequestBody @Validated ProductModel productModel) throws Exception {
         return productCommandService.create(productModel);
     }
