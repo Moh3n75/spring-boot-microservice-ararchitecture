@@ -33,5 +33,7 @@ public class ProductAggregate {
     public void on(ProductCreatedEvent productCreatedEvent) {
         this.eventId = productCreatedEvent.getEventId();
         this.title = productCreatedEvent.getTitle();
+        this.price = productCreatedEvent.getPrice();
+        this.quantity = productCreatedEvent.getQuantity();
     }
 }
