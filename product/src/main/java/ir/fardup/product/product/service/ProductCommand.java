@@ -5,6 +5,7 @@ import lombok.Data;
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Builder
 @Data

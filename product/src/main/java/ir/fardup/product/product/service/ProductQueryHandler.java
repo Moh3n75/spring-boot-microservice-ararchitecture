@@ -13,10 +13,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Component
 @RequiredArgsConstructor
 public class ProductQueryHandler {
@@ -27,7 +23,9 @@ public class ProductQueryHandler {
     public Page<ProductModel> listGrid(String filter) throws Exception {
         CustomObjectMapper customObjectMapper = new CustomObjectMapper();
         ProductRequestModel productRequestModel = customObjectMapper.readValue(filter, ProductRequestModel.class);
-        return productRepository.findAll(new ProductSpecification(), productRequestModel.makePageable()).map(this::convertEntityToModel);
+        return productRepository
+                .findAll(productRequestModel.makeSpecification(new ProductSpecification()), productRequestModel.makePageable())
+                .map(this::convertEntityToModel);
     }
 
 
