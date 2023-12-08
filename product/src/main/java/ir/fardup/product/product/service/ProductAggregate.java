@@ -1,5 +1,7 @@
 package ir.fardup.product.product.service;
 
+import com.fardup.msutility.customexception.BusinessException;
+import ir.fardup.product.util.BusinessExceptionKeyImpl;
 import lombok.NoArgsConstructor;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
@@ -27,6 +29,7 @@ public class ProductAggregate {
         ProductCreatedEvent productCreatedEvent = new ProductCreatedEvent();
         BeanUtils.copyProperties(productCommand, productCreatedEvent);
         AggregateLifecycle.apply(productCreatedEvent);
+
     }
 
     @EventSourcingHandler

@@ -2,6 +2,7 @@ package ir.fardup.product.product.controller;
 
 import ir.fardup.product.product.service.ProductCommand;
 import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.axonframework.queryhandling.QueryGateway;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,7 +14,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/product")
-public record ProductCommandController(CommandGateway commandGateway) {
+public record ProductCommandController(CommandGateway commandGateway, QueryGateway queryGateway) {
 
 
     @PostMapping("")
