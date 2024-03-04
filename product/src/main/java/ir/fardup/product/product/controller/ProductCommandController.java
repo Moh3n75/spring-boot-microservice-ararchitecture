@@ -1,15 +1,13 @@
 package ir.fardup.product.product.controller;
 
+import ir.fardup.product.product.controller.model.ProductModel;
+import ir.fardup.product.product.controller.model.ProductUpdateModel;
 import ir.fardup.product.product.service.ProductCommand;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.queryhandling.QueryGateway;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -29,4 +27,15 @@ public record ProductCommandController(CommandGateway commandGateway, QueryGatew
 
         return productModel;
     }
+
+    @PutMapping("/{id}")
+    public ProductUpdateModel update(@RequestBody @Validated ProductUpdateModel productUpdateModel, @PathVariable Integer id) throws Exception {
+        var res = commandGateway.sendAndWait(productUpdateModel.toBuilder()
+                .eventId(UUID.randomUUID().toString())
+                .id(id)
+                .build());
+        return productUpdateModel;
+    }
+
+
 }

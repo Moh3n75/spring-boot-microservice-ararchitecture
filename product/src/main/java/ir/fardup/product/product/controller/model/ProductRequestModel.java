@@ -1,4 +1,4 @@
-package ir.fardup.product.product.controller;
+package ir.fardup.product.product.controller.model;
 
 import com.fardup.msutility.search.filter.SearchFilterModel;
 
