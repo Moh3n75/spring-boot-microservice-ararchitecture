@@ -1,6 +1,7 @@
 package ir.fardup.product.product.service;
 
 import com.fardup.msutility.customexception.BusinessException;
+import ir.fardup.product.product.controller.model.ProductCreateModel;
 import ir.fardup.product.product.controller.model.ProductUpdateModel;
 import ir.fardup.product.util.BusinessExceptionKeyImpl;
 import lombok.NoArgsConstructor;
@@ -28,30 +29,28 @@ public class ProductAggregate {
     private Integer quantity;
 
     @CommandHandler
-    public ProductAggregate(ProductCommand productCommand) {
+    public ProductAggregate(ProductCreateModel productCreateModel) {
         //validate create product command
-
-        ProductCreatedEvent productCreatedEvent = new ProductCreatedEvent();
-        BeanUtils.copyProperties(productCommand, productCreatedEvent);
-        AggregateLifecycle.apply(productCreatedEvent);
+        AggregateLifecycle.apply(productCreateModel);
 
     }
 
     @CommandHandler
     public ProductAggregate(ProductUpdateModel productUpdateModel) {
+        //validate and select needs
         AggregateLifecycle.apply(productUpdateModel);
     }
 
     @EventSourcingHandler
-    public void on(ProductCreatedEvent productCreatedEvent) {
-        this.eventId = productCreatedEvent.getEventId();
-        this.title = productCreatedEvent.getTitle();
-        this.price = productCreatedEvent.getPrice();
-        this.quantity = productCreatedEvent.getQuantity();
+    public void create(ProductCreateModel productCreateModel) {
+        this.eventId = productCreateModel.getEventId();
+        this.title = productCreateModel.getTitle();
+        this.price = productCreateModel.getPrice();
+        this.quantity = productCreateModel.getQuantity();
     }
 
     @EventSourcingHandler
-    public void on(ProductUpdateModel productUpdateModel) {
+    public void update(ProductUpdateModel productUpdateModel) {
         this.eventId = productUpdateModel.getEventId();
         this.id = productUpdateModel.getId();
         this.title = productUpdateModel.getTitle();

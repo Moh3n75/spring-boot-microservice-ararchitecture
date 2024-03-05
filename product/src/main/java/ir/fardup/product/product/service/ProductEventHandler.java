@@ -1,5 +1,6 @@
 package ir.fardup.product.product.service;
 
+import ir.fardup.product.product.controller.model.ProductCreateModel;
 import ir.fardup.product.product.controller.model.ProductUpdateModel;
 import ir.fardup.product.product.orm.Product;
 import ir.fardup.product.product.orm.ProductRepository;
@@ -19,20 +20,21 @@ public class ProductEventHandler {
 
     @EventHandler
     @Transactional(rollbackFor = Exception.class)
-    public void on(ProductCreatedEvent productCreatedEvent) throws Exception {
+    public void create(ProductCreateModel productCreateModel) throws Exception {
         Product product = new Product();
-        BeanUtils.copyProperties(productCreatedEvent, product);
+        BeanUtils.copyProperties(productCreateModel, product);
         productRepository.save(product);
     }
 
 
     @EventHandler
     @Transactional(rollbackFor = Exception.class)
-    public void on(ProductUpdateModel productUpdateModel) throws Exception {
+    public void update(ProductUpdateModel productUpdateModel) throws Exception {
         Product product = productRepository.findById(productUpdateModel.getId())
                 .orElseThrow();
         BeanUtils.copyProperties(productUpdateModel, product);
         productRepository.save(product);
     }
+
 
 }
