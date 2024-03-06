@@ -27,6 +27,12 @@ public class ProductQueryHandler {
                 .map(this::convertEntityToModel);
     }
 
+    @QueryHandler
+    public ProductModel find(Integer id) throws Exception {
+        return convertEntityToModel(productRepository.findById(id)
+                .orElseThrow());
+    }
+
 
     ProductModel convertEntityToModel(Product product) {
         ProductModel productModel = new ProductModel();
