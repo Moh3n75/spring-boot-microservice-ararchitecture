@@ -1,5 +1,6 @@
 package ir.fardup.product.product.controller.model;
 
+import com.fardup.msutility.axon.BaseCommand;
 import com.fardup.msutility.customvalidation.required.Required;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotEmpty;
@@ -21,11 +22,11 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @SuperBuilder(toBuilder = true)
 //validation On DTO
-public class ProductModel /*extends BaseCommand<String>*/ {
+public class ProductModel extends BaseCommand {
 
-    @TargetAggregateIdentifier
+    /*@TargetAggregateIdentifier
     public String eventId;
-
+*/
     private Integer id;
 
 
