@@ -2,10 +2,7 @@ package ir.fardup.product.product.controller.model;
 
 import com.fardup.msutility.axon.BaseCommand;
 import com.fardup.msutility.customvalidation.required.Required;
-import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,7 +13,7 @@ import org.springframework.format.annotation.NumberFormat;
 
 import java.math.BigDecimal;
 
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,9 +21,6 @@ import java.math.BigDecimal;
 //validation On DTO
 public class ProductModel extends BaseCommand {
 
-    /*@TargetAggregateIdentifier
-    public String eventId;
-*/
     private Integer id;
 
 
@@ -41,6 +35,11 @@ public class ProductModel extends BaseCommand {
     @Required
     @PositiveOrZero
     private Integer quantity;
+
+    @NotNull
+    @NotEmpty
+    @Positive
+    private Integer categoryId;
 
     public ProductModel(Integer id, String title) {
         this.id = id;
