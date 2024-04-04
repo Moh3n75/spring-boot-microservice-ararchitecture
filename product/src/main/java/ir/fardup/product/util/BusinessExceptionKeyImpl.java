@@ -4,7 +4,10 @@ import com.fardup.msutility.customexception.CustomExceptionKey;
 
 public enum BusinessExceptionKeyImpl implements CustomExceptionKey {
 
-    REQUEST_DOESNT_HAVE_CODE("REQUEST_DOESNT_HAVE_CODE"),;
+    REQUEST_DOESNT_HAVE_CODE("REQUEST_DOESNT_HAVE_CODE"),
+    DUPLICATE_TITLE("DUPLICATE_TITLE"),
+    NOT_FOND("NOT_FOUND"),
+    ;
 
     private final String value;
 

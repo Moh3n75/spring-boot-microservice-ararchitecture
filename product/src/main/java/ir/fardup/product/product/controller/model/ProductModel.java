@@ -37,7 +37,6 @@ public class ProductModel extends BaseCommand {
     private Integer quantity;
 
     @NotNull
-    @NotEmpty
     @Positive
     private Integer categoryId;
 

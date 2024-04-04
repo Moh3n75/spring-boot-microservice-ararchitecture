@@ -1,5 +1,7 @@
 package ir.fardup.product.product.service;
 
+import com.fardup.msutility.customexception.BusinessException;
+import ir.fardup.product.category.aggregate.CategoryEventHandler;
 import ir.fardup.product.product.controller.model.ProductCreateModel;
 import ir.fardup.product.product.controller.model.ProductUpdateModel;
 import ir.fardup.product.product.orm.Product;
@@ -17,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProductEventHandler {
 
     private final ProductRepository productRepository;
+
+    private final CategoryEventHandler categoryEventHandler;
 
     @EventHandler
     @Transactional(rollbackFor = Exception.class)
