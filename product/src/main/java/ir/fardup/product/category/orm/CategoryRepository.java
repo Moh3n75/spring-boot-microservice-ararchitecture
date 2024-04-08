@@ -8,4 +8,6 @@ public interface CategoryRepository extends JpaRepository<Category, Integer>,
         JpaSpecificationExecutor<Category>, JpaSpecificationExecutorWithProjection<Category, Integer> {
 
     Boolean existsByTitle(String title);
+
+    Category findByCreateProcessUUID(String createProcessUUID);
 }

@@ -1,6 +1,8 @@
 package ir.fardup.product.product.service;
 
+import com.fardup.msutility.axon.RequestInfo;
 import com.fardup.msutility.customexception.BusinessException;
+import io.axoniq.axonserver.grpc.command.Command;
 import ir.fardup.product.category.aggregate.CategoryAggregate;
 import ir.fardup.product.category.aggregate.CategoryAggregateMember;
 import ir.fardup.product.category.controller.CategoryCreateModel;
@@ -10,19 +12,28 @@ import ir.fardup.product.product.controller.model.ProductModel;
 import ir.fardup.product.product.controller.model.ProductUpdateModel;
 import ir.fardup.product.product.orm.ProductRepository;
 import ir.fardup.product.util.BusinessExceptionKeyImpl;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.commandhandling.CommandHandler;
+import org.axonframework.eventhandling.EventBus;
 import org.axonframework.eventsourcing.EventSourcingHandler;
+import org.axonframework.messaging.MetaData;
+import org.axonframework.messaging.annotation.MetaDataValue;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.modelling.command.AggregateMember;
 import org.axonframework.spring.stereotype.Aggregate;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import java.math.BigDecimal;
+import java.util.Map;
 import java.util.UUID;
 
 @Aggregate
 @NoArgsConstructor
+@Slf4j
 public class ProductAggregate {
 
     @AggregateIdentifier
@@ -40,7 +51,7 @@ public class ProductAggregate {
     @CommandHandler
     public ProductAggregate(ProductCreateModel productCreateModel,
                             ProductRepository productRepository,
-                            CategoryRepository categoryRepository)throws Exception {
+                            CategoryRepository categoryRepository, @MetaDataValue("httpServlet") HttpServletRequest httpServlet) throws Exception {
         //validate create product command
         if (productRepository.findByTitle(productCreateModel.getTitle()) != null) {
             throw new BusinessException(BusinessExceptionKeyImpl.DUPLICATE_TITLE, productCreateModel.getTitle());
@@ -49,10 +60,13 @@ public class ProductAggregate {
             throw new BusinessException(BusinessExceptionKeyImpl.NOT_FOND, productCreateModel.getId().toString());
         }
 
-        AggregateLifecycle.createNew(CategoryAggregate.class,() -> new CategoryAggregate(CategoryCreateModel.builder()
+
+        log.info("request context holder request body {}",RequestContextHolder.getRequestAttributes());
+        log.info("request info request body {}", RequestInfo.getRequest());
+        AggregateLifecycle.createNew(CategoryAggregate.class, () -> new CategoryAggregate(CategoryCreateModel.builder()
                 .eventId(UUID.randomUUID().toString())
-                .title("t")
-                .build(),categoryRepository));
+                .title(productCreateModel.getEventId())
+                .build(), categoryRepository));
         AggregateLifecycle.apply(productCreateModel);
 
     }
@@ -66,12 +80,13 @@ public class ProductAggregate {
     }
 
     @EventSourcingHandler
-    public void create(ProductCreateModel productCreateModel) {
+    public void create(ProductCreateModel productCreateModel, @MetaDataValue("httpServlet") HttpServletRequest httpServlet) {
         this.categoryAggregateMember = new CategoryAggregateMember(UUID.randomUUID().toString(), 12, "t");
         this.eventId = productCreateModel.getEventId();
         this.title = productCreateModel.getTitle();
         this.price = productCreateModel.getPrice();
         this.quantity = productCreateModel.getQuantity();
+
     }
 
     @EventSourcingHandler

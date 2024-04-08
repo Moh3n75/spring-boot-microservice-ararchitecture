@@ -14,7 +14,9 @@ public class XStreamConfig {
                 "ir.fardup.**",
                 "java.base.**",
                 "java.util.**",
-                "org.springframework.**"});
+                "java.nio.**",
+                "org.springframework.**"
+        });
         return xStream;
     }
 }

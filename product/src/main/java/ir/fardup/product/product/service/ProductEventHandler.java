@@ -1,32 +1,39 @@
 package ir.fardup.product.product.service;
 
-import com.fardup.msutility.customexception.BusinessException;
-import ir.fardup.product.category.aggregate.CategoryEventHandler;
+import ir.fardup.product.category.orm.Category;
+import ir.fardup.product.category.orm.CategoryRepository;
 import ir.fardup.product.product.controller.model.ProductCreateModel;
 import ir.fardup.product.product.controller.model.ProductUpdateModel;
 import ir.fardup.product.product.orm.Product;
 import ir.fardup.product.product.orm.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
 
 @Component
 @RequiredArgsConstructor
 @ProcessingGroup("product-group")
+@Slf4j
 public class ProductEventHandler {
 
     private final ProductRepository productRepository;
 
-    private final CategoryEventHandler categoryEventHandler;
+    private final CategoryRepository categoryRepository;
 
     @EventHandler
     @Transactional(rollbackFor = Exception.class)
     public void create(ProductCreateModel productCreateModel) throws Exception {
+        log.info("request context is {}", RequestContextHolder.getRequestAttributes());
         Product product = new Product();
+        Category category =
+                categoryRepository.findByCreateProcessUUID(RequestContextHolder.currentRequestAttributes().getAttribute("PROCESS-UUID",0).toString());
         BeanUtils.copyProperties(productCreateModel, product);
+        product.setCategory(category);
         productRepository.save(product);
     }
 
