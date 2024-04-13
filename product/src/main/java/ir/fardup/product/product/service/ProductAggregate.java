@@ -3,6 +3,7 @@ package ir.fardup.product.product.service;
 import com.fardup.msutility.axon.RequestInfo;
 import com.fardup.msutility.customexception.BusinessException;
 import io.axoniq.axonserver.grpc.command.Command;
+import ir.fardup.models.product.ProductReserveModel;
 import ir.fardup.product.category.aggregate.CategoryAggregate;
 import ir.fardup.product.category.aggregate.CategoryAggregateMember;
 import ir.fardup.product.category.controller.CategoryCreateModel;
@@ -61,7 +62,7 @@ public class ProductAggregate {
         }
 
 
-        log.info("request context holder request body {}",RequestContextHolder.getRequestAttributes());
+        log.info("request context holder request body {}", RequestContextHolder.getRequestAttributes());
         log.info("request info request body {}", RequestInfo.getRequest());
         AggregateLifecycle.createNew(CategoryAggregate.class, () -> new CategoryAggregate(CategoryCreateModel.builder()
                 .eventId(UUID.randomUUID().toString())
@@ -79,8 +80,16 @@ public class ProductAggregate {
         AggregateLifecycle.apply(productUpdateModel);
     }
 
+    @CommandHandler
+    public void handle(ProductReserveModel productReserveModel) {
+        if (quantity < productReserveModel.getQuantity()) {
+
+        }
+
+    }
+
     @EventSourcingHandler
-    public void create(ProductCreateModel productCreateModel, @MetaDataValue("httpServlet") HttpServletRequest httpServlet) {
+    public void create(ProductCreateModel productCreateModel) {
         this.categoryAggregateMember = new CategoryAggregateMember(UUID.randomUUID().toString(), 12, "t");
         this.eventId = productCreateModel.getEventId();
         this.title = productCreateModel.getTitle();
@@ -96,6 +105,13 @@ public class ProductAggregate {
         this.title = productUpdateModel.getTitle();
         this.price = productUpdateModel.getPrice();
         this.quantity = productUpdateModel.getQuantity();
+    }
+
+    @EventSourcingHandler
+    public void update(ProductReserveModel productReserveModel) {
+        this.eventId = productReserveModel.getEventId();
+        this.id = productReserveModel.getProductId();
+        this.quantity -= productReserveModel.getQuantity();
     }
 
     private void validate(ProductModel productModel) {

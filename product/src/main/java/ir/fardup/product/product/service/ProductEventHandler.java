@@ -1,5 +1,6 @@
 package ir.fardup.product.product.service;
 
+import ir.fardup.models.product.ProductReserveModel;
 import ir.fardup.product.category.orm.Category;
 import ir.fardup.product.category.orm.CategoryRepository;
 import ir.fardup.product.product.controller.model.ProductCreateModel;
@@ -31,7 +32,7 @@ public class ProductEventHandler {
         log.info("request context is {}", RequestContextHolder.getRequestAttributes());
         Product product = new Product();
         Category category =
-                categoryRepository.findByCreateProcessUUID(RequestContextHolder.currentRequestAttributes().getAttribute("PROCESS-UUID",0).toString());
+                categoryRepository.findByCreateProcessUUID(RequestContextHolder.currentRequestAttributes().getAttribute("PROCESS-UUID", 0).toString());
         BeanUtils.copyProperties(productCreateModel, product);
         product.setCategory(category);
         productRepository.save(product);
@@ -47,5 +48,13 @@ public class ProductEventHandler {
         productRepository.save(product);
     }
 
+    @EventHandler
+    @Transactional(rollbackFor = Exception.class)
+    public void reserve(ProductReserveModel productReserveModel) throws Exception {
+        Product product = productRepository.findById(productReserveModel.getOrderId())
+                .orElseThrow();
+        product.setQuantity(productReserveModel.getQuantity() - product.getQuantity());
+        productRepository.save(product);
+    }
 
 }
