@@ -1,13 +1,11 @@
 package ir.fardup.order.config;
 
 import com.fardup.msutility.axon.RequestInfo;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.CommandMessage;
-import org.axonframework.messaging.InterceptorChain;
 import org.axonframework.messaging.MessageDispatchInterceptor;
-import org.axonframework.messaging.MessageHandlerInterceptor;
-import org.axonframework.messaging.unitofwork.UnitOfWork;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -16,14 +14,17 @@ import java.util.function.BiFunction;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class CommandInterceptor implements MessageDispatchInterceptor<CommandMessage<?>> /*MessageHandlerInterceptor<CommandMessage<?>>*/ {
 
+    private final HttpServletRequest httpServletRequest;
 
     @Override
     public BiFunction<Integer, CommandMessage<?>, CommandMessage<?>> handle(List<? extends CommandMessage<?>> messages) {
         return (index, command) -> {
             log.info("Dispatching a command {}.", command);
-            return command;
+            RequestInfo.setHeaders(httpServletRequest);
+            return command.andMetaData(Map.of("processUUID",httpServletRequest.getAttribute("PROCESS-UUID")));
         };
     }
 
