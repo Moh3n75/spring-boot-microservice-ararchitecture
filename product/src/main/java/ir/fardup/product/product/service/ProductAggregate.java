@@ -52,7 +52,7 @@ public class ProductAggregate {
     @CommandHandler
     public ProductAggregate(ProductCreateModel productCreateModel,
                             ProductRepository productRepository,
-                            CategoryRepository categoryRepository, @MetaDataValue("httpServlet") HttpServletRequest httpServlet) throws Exception {
+                            CategoryRepository categoryRepository) throws Exception {
         //validate create product command
         if (productRepository.findByTitle(productCreateModel.getTitle()) != null) {
             throw new BusinessException(BusinessExceptionKeyImpl.DUPLICATE_TITLE, productCreateModel.getTitle());
@@ -63,7 +63,6 @@ public class ProductAggregate {
 
 
         log.info("request context holder request body {}", RequestContextHolder.getRequestAttributes());
-        log.info("request info request body {}", RequestInfo.getRequest());
         AggregateLifecycle.createNew(CategoryAggregate.class, () -> new CategoryAggregate(CategoryCreateModel.builder()
                 .eventId(UUID.randomUUID().toString())
                 .title(productCreateModel.getEventId())
@@ -81,12 +80,15 @@ public class ProductAggregate {
     }
 
     @CommandHandler
-    public void handle(ProductReserveModel productReserveModel) {
-        if (quantity < productReserveModel.getQuantity()) {
+    public ProductAggregate(ProductReserveModel productReserveModel,
+                            ProductRepository productRepository) {
+        if (productRepository.findById(productReserveModel.getProductId()).orElseThrow().getQuantity() < productReserveModel.getQuantity()) {
 
         }
 
+        AggregateLifecycle.apply(productReserveModel);
     }
+
 
     @EventSourcingHandler
     public void create(ProductCreateModel productCreateModel) {
@@ -108,10 +110,10 @@ public class ProductAggregate {
     }
 
     @EventSourcingHandler
-    public void update(ProductReserveModel productReserveModel) {
+    public void reserve(ProductReserveModel productReserveModel) {
         this.eventId = productReserveModel.getEventId();
         this.id = productReserveModel.getProductId();
-        this.quantity -= productReserveModel.getQuantity();
+        this.quantity = productReserveModel.getQuantity();
     }
 
     private void validate(ProductModel productModel) {

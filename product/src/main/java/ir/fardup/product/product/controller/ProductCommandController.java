@@ -1,6 +1,7 @@
 package ir.fardup.product.product.controller;
 
 import com.fardup.msutility.axon.RequestInfo;
+import ir.fardup.models.product.ProductReserveModel;
 import ir.fardup.product.product.controller.model.ProductCreateModel;
 import ir.fardup.product.product.controller.model.ProductUpdateModel;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +24,6 @@ public record ProductCommandController(CommandGateway commandGateway, QueryGatew
 
     @PostMapping("")
     public ProductCreateModel create(@RequestBody @Validated ProductCreateModel productCreateModel) throws Exception {
-        log.info(RequestInfo.getRequest().toString());
         var res = commandGateway.sendAndWait(productCreateModel.toBuilder()
                 .eventId(UUID.randomUUID().toString())
                 .build());
@@ -39,6 +39,17 @@ public record ProductCommandController(CommandGateway commandGateway, QueryGatew
                 .build());
         productUpdateModel.setEventId(res.toString());
         return productUpdateModel;
+    }
+
+
+    @PutMapping("/{id}/reserve")
+    public ProductReserveModel reserve(@RequestBody @Validated ProductReserveModel productReserveModel, @PathVariable Integer id) throws Exception {
+        var res = commandGateway.sendAndWait(productReserveModel.toBuilder()
+                .eventId(UUID.randomUUID().toString())
+
+                .build());
+        productReserveModel.setEventId(res.toString());
+        return productReserveModel;
     }
 
 

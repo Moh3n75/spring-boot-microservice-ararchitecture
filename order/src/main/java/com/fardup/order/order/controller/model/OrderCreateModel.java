@@ -1,9 +1,9 @@
 package com.fardup.order.order.controller.model;
 
-import com.fardup.msutility.axon.BaseCommand;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
@@ -12,7 +12,10 @@ import java.math.BigDecimal;
 @Data
 @SuperBuilder(toBuilder = true)
 @AllArgsConstructor
+@NoArgsConstructor
 public class OrderCreateModel extends OrderModel {
-    private Integer id;
+    private String OrderSagaId;
     private BigDecimal totalAmount;
+    private Integer productId;
+    private Integer quantity;
 }

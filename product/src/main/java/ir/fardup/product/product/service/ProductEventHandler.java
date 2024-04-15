@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
+import org.axonframework.messaging.annotation.MetaDataValue;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,11 +29,11 @@ public class ProductEventHandler {
 
     @EventHandler
     @Transactional(rollbackFor = Exception.class)
-    public void create(ProductCreateModel productCreateModel) throws Exception {
+    public void create(ProductCreateModel productCreateModel, @MetaDataValue("processUUID") String processUUID) throws Exception {
         log.info("request context is {}", RequestContextHolder.getRequestAttributes());
         Product product = new Product();
         Category category =
-                categoryRepository.findByCreateProcessUUID(RequestContextHolder.currentRequestAttributes().getAttribute("PROCESS-UUID", 0).toString());
+                categoryRepository.findByCreateProcessUUID(processUUID);
         BeanUtils.copyProperties(productCreateModel, product);
         product.setCategory(category);
         productRepository.save(product);
@@ -51,9 +52,9 @@ public class ProductEventHandler {
     @EventHandler
     @Transactional(rollbackFor = Exception.class)
     public void reserve(ProductReserveModel productReserveModel) throws Exception {
-        Product product = productRepository.findById(productReserveModel.getOrderId())
+        Product product = productRepository.findById(productReserveModel.getProductId())
                 .orElseThrow();
-        product.setQuantity(productReserveModel.getQuantity() - product.getQuantity());
+        product.setQuantity(product.getQuantity() - productReserveModel.getQuantity());
         productRepository.save(product);
     }
 

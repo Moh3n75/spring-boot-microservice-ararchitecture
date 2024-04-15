@@ -10,7 +10,7 @@ import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "ORDER")
+@Table(name = "FIRST_ORDER")
 @Data
 public class Order extends GenericEntity {
 

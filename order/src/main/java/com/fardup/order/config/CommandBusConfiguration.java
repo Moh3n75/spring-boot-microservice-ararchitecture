@@ -1,12 +1,14 @@
-package ir.fardup.product.config;
+package com.fardup.order.config;
 
 
 import lombok.RequiredArgsConstructor;
 import org.axonframework.commandhandling.CommandBus;
+import org.axonframework.commandhandling.SimpleCommandBus;
 import org.axonframework.config.EventProcessingConfigurer;
-import org.axonframework.eventhandling.EventBus;
 import org.axonframework.eventhandling.PropagatingErrorHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
@@ -21,19 +23,19 @@ public class CommandBusConfiguration {
                 .registerDefaultListenerInvocationErrorHandler(conf -> PropagatingErrorHandler.instance());
     }
 
+//    @Bean
+//    public CommandBus configureCommandBus() {
+//        CommandBus commandBus = SimpleCommandBus.builder().build();
+//        commandBus.registerHandlerInterceptor(new CommandInterceptor());
+//        return commandBus;
+//
+//    }
+
     /*@Autowired
-    public CommandBus configureCommandBus(CommandBus commandBus, HttpServletRequest httpServletRequest) {
-        if (commandBus instanceof SimpleCommandBus){
-        }
-        commandBus.registerHandlerInterceptor(new CommandInterceptor(httpServletRequest));
+    public CommandBus configureCommandBus(CommandBus commandBus){
+//        commandBus.registerHandlerInterceptor(new CommandInterceptor());
         return commandBus;
-
     }*/
-
-    @Autowired
-    public void configureCommandBus(EventBus eventBus) {
-        eventBus.registerDispatchInterceptor(new EventInterceptor());
-    }
 
     @Autowired
     public void registerCreateProductCommandInterceptor(CommandBus commandBus, CommandInterceptor commandInterceptor) {

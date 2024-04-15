@@ -11,11 +11,12 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder(toBuilder = true)
 @AllArgsConstructor
+@NoArgsConstructor
 public class ProductReserveModel extends BaseCommand {
 
-    private final Integer orderId;
+    private String orderSagaId;
 
-    private final Integer productId;
+    private Integer productId;
 
-    private final Integer quantity;
+    private Integer quantity;
 }
