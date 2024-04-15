@@ -1,4 +1,4 @@
-package com.fardup.order.order.orm;
+package ir.fardup.order.order.orm;
 
 import com.fardup.msutility.jparepository.repository.JpaSpecificationExecutorWithProjection;
 import org.springframework.data.jpa.repository.JpaRepository;

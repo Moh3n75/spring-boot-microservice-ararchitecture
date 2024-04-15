@@ -1,4 +1,4 @@
-package com.fardup.order.order.orm;
+package ir.fardup.order.order.orm;
 
 import com.fardup.msutility.entity.GenericEntity;
 import jakarta.persistence.*;

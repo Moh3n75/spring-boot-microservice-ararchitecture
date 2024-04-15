@@ -1,6 +1,6 @@
-package com.fardup.order.order.controller;
+package ir.fardup.order.order.controller;
 
-import com.fardup.order.order.controller.model.OrderCreateModel;
+import ir.fardup.order.order.controller.model.OrderCreateModel;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

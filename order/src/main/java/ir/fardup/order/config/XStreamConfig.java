@@ -1,4 +1,4 @@
-package com.fardup.order.config;
+package ir.fardup.order.config;
 
 import com.thoughtworks.xstream.XStream;
 import org.springframework.context.annotation.Bean;

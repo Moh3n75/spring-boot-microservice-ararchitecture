@@ -1,4 +1,4 @@
-package com.fardup.order.config;
+package ir.fardup.order.config;
 
 import com.fardup.msutility.axon.RequestInfo;
 import lombok.extern.slf4j.Slf4j;
