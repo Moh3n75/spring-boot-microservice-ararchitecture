@@ -7,7 +7,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@SpringBootApplication(scanBasePackages = {"com.fardup.order","com.fardup.msutility"})
+@SpringBootApplication(scanBasePackages = {"ir.fardup.order","com.fardup.msutility"})
 @EnableDiscoveryClient
 @EnableJpaRepositories(repositoryBaseClass = JpaSpecificationExecutorWithProjectionImpl.class)
 @EnableJpaAuditing

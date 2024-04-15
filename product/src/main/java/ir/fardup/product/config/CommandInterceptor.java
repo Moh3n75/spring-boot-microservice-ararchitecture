@@ -23,8 +23,12 @@ public class CommandInterceptor implements MessageDispatchInterceptor<CommandMes
     public BiFunction<Integer, CommandMessage<?>, CommandMessage<?>> handle(List<? extends CommandMessage<?>> messages) {
         return (index, command) -> {
             log.info("Dispatching a command {}.", command);
-            RequestInfo.setHeaders(httpServletRequest);
-            return command.andMetaData(Map.of("processUUID",httpServletRequest.getAttribute("PROCESS-UUID")));
+            if (RequestInfo.getHeaderNames().isEmpty()) {
+                RequestInfo.setHeaders(httpServletRequest);
+            }
+            return command
+                    .andMetaData(Map.of("processUUID", RequestInfo.getHeader("PROCESS-UUID")))
+                    .andMetaData(Map.of("requestInfo", RequestInfo.getHeaders()));
         };
     }
 

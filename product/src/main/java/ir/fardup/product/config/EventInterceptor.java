@@ -6,6 +6,7 @@ import org.axonframework.eventhandling.EventMessage;
 import org.axonframework.messaging.MessageDispatchInterceptor;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.function.BiFunction;
 
@@ -18,6 +19,8 @@ public class EventInterceptor implements MessageDispatchInterceptor<EventMessage
             List<? extends EventMessage<?>> messages) {
         return (index, event) -> {
             log.info("Publishing event: [{}].", event);
+            if (event.getMetaData().get("requestInfo") != null)
+                RequestInfo.setHeaders((HashMap<String, String>) event.getMetaData().get("requestInfo"));
             log.info("Publishing event: [{}].", RequestInfo.getHeader("PROCESS-UUID"));
             return event;
         };

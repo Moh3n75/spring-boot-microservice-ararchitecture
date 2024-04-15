@@ -1,5 +1,6 @@
 package ir.fardup.order.saga;
 
+import com.fardup.msutility.axon.RequestInfo;
 import ir.fardup.order.order.controller.model.OrderCreateModel;
 import ir.fardup.models.product.ProductReserveModel;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,9 @@ import org.axonframework.modelling.saga.StartSaga;
 import org.axonframework.spring.stereotype.Saga;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Saga
@@ -22,11 +26,12 @@ public class OrderManagementSaga {
 
     @StartSaga
     @SagaEventHandler(associationProperty = "orderSagaId")
-    public void handle(OrderCreateModel orderCreateModel, @MetaDataValue("processUUID") String processUUID) {
+    public void handle(OrderCreateModel orderCreateModel, @MetaDataValue("processUUID") String processUUID, @MetaDataValue("requestInfo") HashMap<String, String> requestInfo) {
         log.info("order create run first {}", orderCreateModel.getEventId());
-
+        log.info("Publishing event: [{}].", RequestInfo.getHeader("PROCESS-UUID"));
         //send the commands
-        commandGateway.send(ProductReserveModel.builder().eventId(UUID.randomUUID().toString()).quantity(1).productId(10).orderSagaId(processUUID).build(),
+        commandGateway.send(
+                ProductReserveModel.builder().eventId(UUID.randomUUID().toString()).quantity(1).productId(10).orderSagaId(processUUID).build(),
                 (CommandCallback<ProductReserveModel, Object>) (commandMessage, commandResultMessage) -> {
                     if (commandResultMessage.isExceptional()) {
                         commandResultMessage.exceptionResult().printStackTrace();

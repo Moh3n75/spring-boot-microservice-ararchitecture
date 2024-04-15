@@ -19,6 +19,7 @@ public class HttpRequestCorrelationDataProvider implements CorrelationDataProvid
         if (message instanceof CommandMessage<?>) {
             if (message.getMetaData().containsKey("processUUID")) {
                 correlationData.put("processUUID", message.getMetaData().get("processUUID"));
+                correlationData.put("requestInfo", message.getMetaData().get("requestInfo"));
             }
         }
         return correlationData;
