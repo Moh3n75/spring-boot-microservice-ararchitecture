@@ -23,35 +23,38 @@ public record ProductCommandController(CommandGateway commandGateway, QueryGatew
 
 
     @PostMapping("")
-    public ProductCreateModel create(@RequestBody @Validated ProductCreateModel productCreateModel) throws Exception {
+    public ProductCreateModel create(@RequestBody @Validated ProductCreateModel productCreateModel,
+                                     @RequestAttribute("PROCESS-UUID") String processUUID) throws Exception {
         var res = commandGateway.sendAndWait(productCreateModel.toBuilder()
                 .eventId(UUID.randomUUID().toString())
                 .build());
-        productCreateModel.setEventId(res.toString());
+        productCreateModel.setEventId(processUUID);
         return productCreateModel;
     }
 
     @PutMapping("/{id}")
-    public ProductUpdateModel update(@RequestBody @Validated ProductUpdateModel productUpdateModel, @PathVariable Integer id) throws Exception {
+    public ProductUpdateModel update(@RequestBody @Validated ProductUpdateModel productUpdateModel, @PathVariable Integer id,
+                                     @RequestAttribute("PROCESS-UUID") String processUUID) throws Exception {
         var res = commandGateway.sendAndWait(productUpdateModel.toBuilder()
                 .eventId(UUID.randomUUID().toString())
                 .id(id)
                 .build());
-        productUpdateModel.setEventId(res.toString());
+        productUpdateModel.setEventId(processUUID);
         return productUpdateModel;
     }
 
 
     @PutMapping("/{id}/reserve")
-    public ProductReserveModel reserve(@RequestBody @Validated ProductReserveModel productReserveModel, @PathVariable Integer id) throws Exception {
-        var res = commandGateway.sendAndWait(productReserveModel.toBuilder()
+    public ProductReserveModel reserve(@RequestBody @Validated ProductReserveModel productReserveModel, @PathVariable Integer id,
+                                       @RequestAttribute("PROCESS-UUID") String processUUID
+    ) throws Exception {
+        commandGateway.sendAndWait(productReserveModel.toBuilder()
                 .eventId(UUID.randomUUID().toString())
-
+                .productId(id)
                 .build());
-        productReserveModel.setEventId(res.toString());
+        productReserveModel.setEventId(processUUID);
         return productReserveModel;
     }
-
 
 
 }

@@ -1,5 +1,6 @@
 package ir.fardup.order.order.controller;
 
+import com.fardup.msutility.axon.RequestInfo;
 import ir.fardup.order.order.controller.model.OrderCreateModel;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,8 +16,10 @@ public record OrderCommandController(CommandGateway commandGateway) {
 
 
     @PostMapping()
-    public OrderCreateModel create(@RequestBody  OrderCreateModel orderCreateModel) {
-        commandGateway.sendAndWait(orderCreateModel.toBuilder().eventId(UUID.randomUUID().toString()).build());
+    public OrderCreateModel create(@RequestBody OrderCreateModel orderCreateModel) {
+        commandGateway.sendAndWait(orderCreateModel.toBuilder().eventId(UUID.randomUUID().toString())
+                .OrderSagaId(RequestInfo.getHeader("PROCESS-UUID"))
+                .build());
         return orderCreateModel;
     }
 }
