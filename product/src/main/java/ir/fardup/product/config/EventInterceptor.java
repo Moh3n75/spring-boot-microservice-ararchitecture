@@ -19,6 +19,7 @@ public class EventInterceptor implements MessageDispatchInterceptor<EventMessage
             List<? extends EventMessage<?>> messages) {
         return (index, event) -> {
             log.info("Publishing event: [{}].", event);
+            log.info("Publishing event type: [{}].", event.getPayloadType());
             if (event.getMetaData().get("requestInfo") != null)
                 RequestInfo.setHeaders((HashMap<String, String>) event.getMetaData().get("requestInfo"));
             log.info("Publishing event: [{}].", RequestInfo.getHeader("PROCESS-UUID"));

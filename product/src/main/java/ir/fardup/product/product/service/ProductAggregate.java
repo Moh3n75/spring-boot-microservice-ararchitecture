@@ -85,7 +85,7 @@ public class ProductAggregate {
         if (productRepository.findById(productReserveModel.getProductId()).orElseThrow().getQuantity() < productReserveModel.getQuantity()) {
 
         }
-
+        log.info("sagaInfo ID {}", productReserveModel.getOrderSagaId());
         AggregateLifecycle.apply(productReserveModel);
     }
 
