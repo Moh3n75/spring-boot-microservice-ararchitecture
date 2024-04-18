@@ -1,19 +1,14 @@
 package ir.fardup.product.product.controller;
 
-import com.fardup.msutility.axon.RequestInfo;
-import ir.fardup.models.product.ProductReserveModel;
+import ir.fardup.models.product.command.ProductReserveModel;
 import ir.fardup.product.product.controller.model.ProductCreateModel;
 import ir.fardup.product.product.controller.model.ProductUpdateModel;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.java.Log;
-import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.gateway.CommandGateway;
-import org.axonframework.messaging.MetaData;
 import org.axonframework.queryhandling.QueryGateway;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
 import java.util.UUID;
 
 @RestController

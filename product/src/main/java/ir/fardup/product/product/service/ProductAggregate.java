@@ -1,27 +1,20 @@
 package ir.fardup.product.product.service;
 
-import com.fardup.msutility.axon.RequestInfo;
 import com.fardup.msutility.customexception.BusinessException;
-import io.axoniq.axonserver.grpc.command.Command;
-import ir.fardup.models.product.ProductReserveModel;
+import ir.fardup.models.product.command.ProductReserveModel;
+import ir.fardup.models.product.model.ProductModel;
 import ir.fardup.product.category.aggregate.CategoryAggregate;
 import ir.fardup.product.category.aggregate.CategoryAggregateMember;
 import ir.fardup.product.category.controller.CategoryCreateModel;
 import ir.fardup.product.category.orm.CategoryRepository;
 import ir.fardup.product.product.controller.model.ProductCreateModel;
-import ir.fardup.product.product.controller.model.ProductModel;
 import ir.fardup.product.product.controller.model.ProductUpdateModel;
 import ir.fardup.product.product.orm.ProductRepository;
 import ir.fardup.product.util.BusinessExceptionKeyImpl;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.commandhandling.CommandHandler;
-import org.axonframework.eventhandling.EventBus;
 import org.axonframework.eventsourcing.EventSourcingHandler;
-import org.axonframework.messaging.MetaData;
-import org.axonframework.messaging.annotation.MetaDataValue;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.modelling.command.AggregateMember;
@@ -29,7 +22,6 @@ import org.axonframework.spring.stereotype.Aggregate;
 import org.springframework.web.context.request.RequestContextHolder;
 
 import java.math.BigDecimal;
-import java.util.Map;
 import java.util.UUID;
 
 @Aggregate

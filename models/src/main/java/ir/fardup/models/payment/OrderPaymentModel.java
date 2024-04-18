@@ -1,4 +1,4 @@
-package ir.fardup.models.product;
+package ir.fardup.models.payment;
 
 import com.fardup.msutility.axon.BaseCommand;
 import lombok.AllArgsConstructor;
@@ -12,11 +12,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductReserveModel extends BaseCommand {
+public class OrderPaymentModel extends BaseCommand {
 
     private String orderSagaId;
-
-    private Integer productId;
-
-    private Integer quantity;
 }

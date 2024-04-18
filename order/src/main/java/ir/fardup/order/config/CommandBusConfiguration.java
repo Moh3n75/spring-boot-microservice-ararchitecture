@@ -1,6 +1,7 @@
 package ir.fardup.order.config;
 
 
+import ir.fardup.order.saga.OrderManagementSaga;
 import lombok.RequiredArgsConstructor;
 import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.config.EventProcessingConfigurer;
@@ -14,12 +15,12 @@ import org.springframework.context.annotation.Configuration;
 public class CommandBusConfiguration {
 
 
-    @Autowired
+    /*@Autowired
     public void configure(EventProcessingConfigurer configurer) {
         configurer
                 .usingSubscribingEventProcessors()
                 .registerDefaultListenerInvocationErrorHandler(conf -> PropagatingErrorHandler.instance());
-    }
+    }*/
 
     /*@Autowired
     public CommandBus configureCommandBus(CommandBus commandBus, HttpServletRequest httpServletRequest) {

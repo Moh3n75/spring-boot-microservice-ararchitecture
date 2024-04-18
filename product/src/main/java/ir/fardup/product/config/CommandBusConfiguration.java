@@ -14,12 +14,12 @@ import org.springframework.context.annotation.Configuration;
 public class CommandBusConfiguration {
 
 
-    @Autowired
+    /*@Autowired
     public void configure(EventProcessingConfigurer configurer) {
         configurer
                 .usingSubscribingEventProcessors()
                 .registerDefaultListenerInvocationErrorHandler(conf -> PropagatingErrorHandler.instance());
-    }
+    }*/
 
     /*@Autowired
     public CommandBus configureCommandBus(CommandBus commandBus, HttpServletRequest httpServletRequest) {

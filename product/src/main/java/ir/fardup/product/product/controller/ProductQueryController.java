@@ -1,6 +1,6 @@
 package ir.fardup.product.product.controller;
 
-import ir.fardup.product.product.controller.model.ProductModel;
+import ir.fardup.models.product.model.ProductModel;
 import ir.fardup.product.util.PageResponseType;
 import org.axonframework.queryhandling.QueryGateway;
 import org.springframework.data.domain.Page;

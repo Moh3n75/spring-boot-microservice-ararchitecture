@@ -1,7 +1,7 @@
 package ir.fardup.product.product.service;
 
 import com.fardup.msutility.json.CustomObjectMapper;
-import ir.fardup.product.product.controller.model.ProductModel;
+import ir.fardup.models.product.model.ProductModel;
 import ir.fardup.product.product.controller.model.ProductRequestModel;
 import ir.fardup.product.product.orm.Product;
 import ir.fardup.product.product.orm.ProductRepository;
@@ -18,7 +18,7 @@ public class ProductQueryHandler {
 
     private final ProductRepository productRepository;
 
-    @QueryHandler
+    @QueryHandler(queryName = "product-list-grid")
     public Page<ProductModel> listGrid(String filter) throws Exception {
         CustomObjectMapper customObjectMapper = new CustomObjectMapper();
         ProductRequestModel productRequestModel = customObjectMapper.readValue(filter, ProductRequestModel.class);
@@ -27,7 +27,7 @@ public class ProductQueryHandler {
                 .map(this::convertEntityToModel);
     }
 
-    @QueryHandler
+    @QueryHandler(queryName = "product-find")
     public ProductModel find(Integer id) throws Exception {
         return convertEntityToModel(productRepository.findById(id)
                 .orElseThrow());

@@ -1,6 +1,6 @@
 package ir.fardup.product.product.service;
 
-import ir.fardup.models.product.ProductReserveModel;
+import ir.fardup.models.product.command.ProductReserveModel;
 import ir.fardup.product.category.orm.Category;
 import ir.fardup.product.category.orm.CategoryRepository;
 import ir.fardup.product.product.controller.model.ProductCreateModel;
@@ -52,10 +52,7 @@ public class ProductEventHandler {
     @EventHandler
     @Transactional(rollbackFor = Exception.class)
     public void reserve(ProductReserveModel productReserveModel) throws Exception {
-        Product product = productRepository.findById(productReserveModel.getProductId())
-                .orElseThrow();
-        product.setQuantity(product.getQuantity() - productReserveModel.getQuantity());
-        productRepository.save(product);
+        productRepository.updateDecreaseQuantity(productReserveModel.getProductId(), productReserveModel.getQuantity());
     }
 
 }

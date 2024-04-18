@@ -1,5 +1,6 @@
 package ir.fardup.product.product.controller.model;
 
+import ir.fardup.models.product.model.ProductModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
