@@ -3,9 +3,7 @@ package ir.fardup.product.config;
 
 import lombok.RequiredArgsConstructor;
 import org.axonframework.commandhandling.CommandBus;
-import org.axonframework.config.EventProcessingConfigurer;
-import org.axonframework.eventhandling.EventBus;
-import org.axonframework.eventhandling.PropagatingErrorHandler;
+import org.axonframework.config.Configurer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
@@ -31,8 +29,11 @@ public class CommandBusConfiguration {
     }*/
 
     @Autowired
-    public void configureCommandBus(EventBus eventBus) {
-        eventBus.registerDispatchInterceptor(new EventInterceptor());
+    public void configureCommandBus(Configurer configurer) {
+        configurer.eventProcessing()
+                .registerDefaultHandlerInterceptor(
+                        (config, processorName) -> new EventInterceptor());
+
     }
 
     @Autowired

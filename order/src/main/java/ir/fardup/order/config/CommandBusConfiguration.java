@@ -4,6 +4,7 @@ package ir.fardup.order.config;
 import ir.fardup.order.saga.OrderManagementSaga;
 import lombok.RequiredArgsConstructor;
 import org.axonframework.commandhandling.CommandBus;
+import org.axonframework.config.Configurer;
 import org.axonframework.config.EventProcessingConfigurer;
 import org.axonframework.eventhandling.EventBus;
 import org.axonframework.eventhandling.PropagatingErrorHandler;
@@ -32,8 +33,11 @@ public class CommandBusConfiguration {
     }*/
 
     @Autowired
-    public void configureCommandBus(EventBus eventBus) {
-        eventBus.registerDispatchInterceptor(new EventInterceptor());
+    public void configureCommandBus(Configurer configurer) {
+        configurer.eventProcessing()
+                .registerDefaultHandlerInterceptor(
+                        (config, processorName) -> new EventInterceptor());
+
     }
 
     @Autowired

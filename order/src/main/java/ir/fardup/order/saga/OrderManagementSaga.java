@@ -41,7 +41,7 @@ public class OrderManagementSaga {
                 .productId(25)
                 .orderSagaId(orderCreateModel.getOrderSagaId())
                 .build();
-        RequestInfo.setHeaders(requestInfo);
+        log.info("request info {}", RequestInfo.getHeaders());
         commandGateway.sendAndWait(productReserveModel/*, (commandMessage, commandResultMessage) -> {
             if (commandResultMessage.isExceptional()) {
                 // Handle command execution failure

@@ -20,6 +20,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer>,
 
     @Modifying()
     @Transactional(rollbackFor = Exception.class)
-    @Query(value = "UPDATE PRODUCT SET QUANTITY = QUANTITY - :quantity  WHERE ID = :id ", nativeQuery = true)
-    void updateDecreaseQuantity(Integer id, Integer quantity);
+    @Query(value = "UPDATE PRODUCT SET QUANTITY = QUANTITY - :quantity , UPDATE_AT = SYSDATE , UPDATE_PROCESS_UUID = :processUUID  WHERE ID = :id ", nativeQuery = true)
+    void updateDecreaseQuantity(Integer id, Integer quantity, String processUUID);
 }

@@ -51,8 +51,8 @@ public class ProductEventHandler {
 
     @EventHandler
     @Transactional(rollbackFor = Exception.class)
-    public void reserve(ProductReserveModel productReserveModel) throws Exception {
-        productRepository.updateDecreaseQuantity(productReserveModel.getProductId(), productReserveModel.getQuantity());
+    public void reserve(ProductReserveModel productReserveModel,@MetaDataValue("processUUID") String processUUID) throws Exception {
+        productRepository.updateDecreaseQuantity(productReserveModel.getProductId(), productReserveModel.getQuantity(),processUUID);
     }
 
 }
