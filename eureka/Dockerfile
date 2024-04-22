@@ -1,4 +1,4 @@
-FROM openjdk:21-slim
+FROM docker.arvancloud.ir/openjdk:21-slim
 COPY . /app
 WORKDIR /app
 RUN ./mvnw clean package -DskipTests
