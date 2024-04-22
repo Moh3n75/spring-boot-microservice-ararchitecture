@@ -1,5 +1,5 @@
-FROM docker.arvancloud.ir/maven:3.9.6-eclipse-temurin-21
-COPY . /app
+FROM docker.arvancloud.ir/maven:3.8.8-eclipse-temurin-21-alpine
+COPY ./eureka /app
 WORKDIR /app
 RUN --mount=type=cache,target=/root/.m2 mvn -f /app/pom.xml clean package
 
