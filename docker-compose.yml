@@ -1,0 +1,18 @@
+version: "3.8"
+services:
+  gateway:
+    build:
+      context: .
+      dockerfile: gateway/Dockerfile
+    container_name: gateway
+    restart: always
+    ports:
+      - "8080:8080"
+  eureka:
+    build:
+      context: .
+      dockerfile: eureka/Dockerfile
+    container_name: eureka
+    restart: always
+    ports:
+      - "8761:8761"
