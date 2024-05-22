@@ -1,6 +1,7 @@
 package ir.fardup.product.product.service;
 
 import com.fardup.msutility.json.CustomObjectMapper;
+import ir.fardup.models.payment.OrderPaymentModel;
 import ir.fardup.models.product.model.ProductModel;
 import ir.fardup.product.product.controller.model.ProductRequestModel;
 import ir.fardup.product.product.orm.Product;
@@ -11,6 +12,9 @@ import org.axonframework.queryhandling.QueryHandler;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -37,6 +41,7 @@ public class ProductQueryHandler {
     ProductModel convertEntityToModel(Product product) {
         ProductModel productModel = new ProductModel();
         BeanUtils.copyProperties(product, productModel);
+        //productModel.setOrderPaymentModelList(List.of(new OrderPaymentModel(UUID.randomUUID().toString())));
         return productModel;
     }
 }

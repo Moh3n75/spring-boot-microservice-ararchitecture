@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface ProductRepository extends JpaRepository<Product, Integer>,
-        JpaSpecificationExecutor<Product>, JpaSpecificationExecutorWithProjection<Product, Integer> {
+        JpaSpecificationExecutor<Product> {
 
     Product findByTitle(String title);
 
